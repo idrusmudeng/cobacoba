@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <h1>Data dari Google Sheets</h1>
+  <h1>CRUD Google Sheets</h1>
 
   <div class="form-container">
     <h2>Tambah Data</h2>
@@ -23,9 +23,17 @@
 
   <table id="dataTable">
     <thead>
-      <tr id="tableHeader"></tr>
+      <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Username</th>
+        <th>Level</th>
+        <th>Aksi</th>
+      </tr>
     </thead>
-    <tbody id="tableBody"></tbody>
+    <tbody id="tableBody">
+      <!-- Data otomatis -->
+    </tbody>
   </table>
 
   <script src="script.js"></script>
