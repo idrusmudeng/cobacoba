@@ -3,9 +3,7 @@ const url = 'https://script.google.com/macros/s/AKfycbzKnebfaqptl2O5QDrZfakE6rUp
 document.addEventListener('DOMContentLoaded', () => {
   fetchDataAndRenderTable();
 
-  // Form submit handler
-  const form = document.getElementById('createForm');
-  form.addEventListener('submit', (e) => {
+  document.getElementById('createForm').addEventListener('submit', (e) => {
     e.preventDefault();
     createData();
   });
@@ -15,38 +13,24 @@ function fetchDataAndRenderTable() {
   fetch(url)
     .then(response => response.json())
     .then(data => {
-      if (data && data.length > 0) {
-        renderTable(data);
-      } else {
-        console.error('Data kosong atau format tidak sesuai');
-      }
-    })
-    .catch(error => console.error('Error fetching data:', error));
-}
+      const tableBody = document.getElementById('tableBody');
+      tableBody.innerHTML = '';
 
-function renderTable(data) {
-  const headers = Object.keys(data[0]);
-  const tableHeader = document.getElementById('tableHeader');
-  const tableBody = document.getElementById('tableBody');
-
-  tableHeader.innerHTML = '';
-  tableBody.innerHTML = '';
-
-  headers.forEach(header => {
-    const th = document.createElement('th');
-    th.textContent = header;
-    tableHeader.appendChild(th);
-  });
-
-  data.forEach(row => {
-    const tr = document.createElement('tr');
-    headers.forEach(header => {
-      const td = document.createElement('td');
-      td.textContent = row[header];
-      tr.appendChild(td);
+      data.forEach((row, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${row.ID}</td>
+          <td>${row.NAMA}</td>
+          <td>${row.USERNAME}</td>
+          <td>${row.LEVEL}</td>
+          <td>
+            <button class="action-btn edit-btn" onclick="editData(${index}, '${row.ID}', '${row.NAMA}', '${row.USERNAME}', '${row.LEVEL}')">Edit</button>
+            <button class="action-btn delete-btn" onclick="deleteData('${row.ID}')">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
     });
-    tableBody.appendChild(tr);
-  });
 }
 
 function createData() {
@@ -60,27 +44,67 @@ function createData() {
     return;
   }
 
-  const payload = {
-    action: 'create',
-    ID: id,
-    NAMA: nama,
-    USERNAME: username,
-    LEVEL: level
-  };
+  const formData = new FormData();
+  formData.append('action', 'create');
+  formData.append('ID', id);
+  formData.append('NAMA', nama);
+  formData.append('USERNAME', username);
+  formData.append('LEVEL', level);
 
   fetch(url, {
     method: 'POST',
-    body: JSON.stringify(payload),
-    headers: { 'Content-Type': 'application/json' }
+    body: formData
   })
   .then(response => response.json())
   .then(result => {
     alert(result.message || 'Data berhasil ditambahkan');
-    // Refresh data table setelah tambah
     fetchDataAndRenderTable();
-    // Reset form
     document.getElementById('createForm').reset();
   })
-  .catch(error => console.error('Error submitting data:', error));
+  .catch(error => console.error('Error:', error));
 }
- 
+
+function deleteData(id) {
+  if (!confirm(`Yakin ingin menghapus data dengan ID: ${id}?`)) return;
+
+  const formData = new FormData();
+  formData.append('action', 'delete');
+  formData.append('ID', id);
+
+  fetch(url, {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(result => {
+    alert(result.message || 'Data berhasil dihapus');
+    fetchDataAndRenderTable();
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+function editData(index, id, nama, username, level) {
+  const newNama = prompt('Edit Nama:', nama);
+  const newUsername = prompt('Edit Username:', username);
+  const newLevel = prompt('Edit Level:', level);
+
+  if (newNama === null || newUsername === null || newLevel === null) return;
+
+  const formData = new FormData();
+  formData.append('action', 'update');
+  formData.append('ID', id);
+  formData.append('NAMA', newNama);
+  formData.append('USERNAME', newUsername);
+  formData.append('LEVEL', newLevel);
+
+  fetch(url, {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(result => {
+    alert(result.message || 'Data berhasil diupdate');
+    fetchDataAndRenderTable();
+  })
+  .catch(error => console.error('Error:', error));
+}
