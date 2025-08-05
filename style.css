@@ -9,10 +9,45 @@ h1 {
   color: #333;
 }
 
+.form-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+  margin-bottom: 15px;
+}
+
+.form-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background-color: #45a049;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
   background-color: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
