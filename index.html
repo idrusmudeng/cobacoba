@@ -3,21 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data dari Google Sheets</title>
+  <title>CRUD Google Sheets</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <h1>Data dari Google Sheets</h1>
+
+  <div class="form-container">
+    <h2>Tambah Data</h2>
+    <form id="createForm">
+      <input type="text" id="idInput" placeholder="ID" required>
+      <input type="text" id="namaInput" placeholder="Nama" required>
+      <input type="text" id="usernameInput" placeholder="Username" required>
+      <input type="text" id="levelInput" placeholder="Level" required>
+      <button type="submit">Tambah</button>
+    </form>
+  </div>
+
   <table id="dataTable">
     <thead>
-      <tr id="tableHeader">
-        <!-- Header otomatis -->
-      </tr>
+      <tr id="tableHeader"></tr>
     </thead>
-    <tbody id="tableBody">
-      <!-- Data otomatis -->
-    </tbody>
+    <tbody id="tableBody"></tbody>
   </table>
 
   <script src="script.js"></script>
